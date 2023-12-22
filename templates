@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Keyword Suggestions</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 20px;
+            background-color: #f4f4f4;
+            color: #333;
+        }
+        h1 {
+            color: #008080;
+            text-align: center;
+        }
+        label {
+            margin-top: 10px;
+            display: block;
+            font-size: 18px;
+            color: #333;
+        }
+        input {
+            width: 300px;
+            padding: 10px;
+            font-size: 16px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        button {
+            padding: 10px 20px;
+            background-color: #008080;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+        button:hover {
+            background-color: #005656;
+        }
+        p {
+            margin-top: 20px;
+            font-size: 18px;
+            color: #333;
+        }
+        ul {
+            list-style-type: none;
+            padding: 0;
+            margin-top: 10px;
+        }
+        li {
+            margin-bottom: 8px;
+            font-size: 16px;
+            color: #008080;
+        }
+    </style>
+</head>
+<body>
+    <h1>Keyword Suggestions</h1>
+    <label for="keyword_input">Enter keywords (comma-separated):</label>
+    <input type="text" id="keyword_input" name="keyword_input">
+    <button onclick="getSuggestions()">Get Suggestions</button>
+    
+    <p id="suggestions_output">Top Suggestions:</p>
+    <ul id="suggestions_list"></ul>
+    
+    <p id="companies_output">Companies:</p>
+    <ul id="companies_list"></ul>
+
+    <script>
+        function getSuggestions() {
+            var user_input_keywords = document.getElementById("keyword_input").value;
+
+            fetch('/get_suggestions', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded',
+                },
+                body: 'user_input_keywords=' + encodeURIComponent(user_input_keywords),
+            })
+            .then(response => response.json())
+            .then(data => {
+                var suggestions_output = document.getElementById("suggestions_output");
+                suggestions_output.innerHTML = 'Top Suggestions:';
+
+                var suggestions_list = document.getElementById("suggestions_list");
+                suggestions_list.innerHTML = '';
+                data.top_suggestions.forEach(suggestion => {
+                    if (suggestion.trim()) {
+                        var listItem = document.createElement('li');
+                        listItem.textContent = suggestion;
+                        suggestions_list.appendChild(listItem);
+                    }
+                });
+
+                var companies_output = document.getElementById("companies_output");
+                companies_output.innerHTML = 'Companies:';
+
+                var companies_list = document.getElementById("companies_list");
+                companies_list.innerHTML = '';
+                data.companies.forEach(company => {
+                    var listItem = document.createElement('li');
+                    listItem.textContent = company;
+                    companies_list.appendChild(listItem);
+                });
+            });
+        }
+    </script>
+</body>
+</html>
