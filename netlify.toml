@@ -1,5 +1,5 @@
 [build]
-  command = "pip install -r requirements.txt && python app.py"
+  command = "pip install -r requirements.txt && python app.py &"
   functions = "functions"
   publish = "/opt/build/repo"
 
