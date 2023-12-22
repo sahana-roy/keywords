@@ -15,3 +15,8 @@ matplotlib==3.4.3
 pandas==2.0.3
 mlxtend==0.19.0
 openpyxl
+numpy<2.0,>=1.16; python_version <= "3.11"
+scikit-learn>=0.20.3
+scipy>=1.2.1
+setuptools
+gunicorn
